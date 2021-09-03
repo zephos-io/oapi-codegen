@@ -19,7 +19,7 @@ import (
 	"bytes"
 	"embed"
 	"fmt"
-	"path/filepath"
+	"io/fs"
 	"runtime/debug"
 	"sort"
 	"strings"
@@ -27,12 +27,10 @@ import (
 
 	"github.com/getkin/kin-openapi/openapi3"
 	"golang.org/x/tools/imports"
-
-
 )
 
 // Embed the templates directory
-//go:embed templates
+//go:embed templates/*
 var templates embed.FS
 
 // Options defines the optional code to generate.
@@ -587,21 +585,26 @@ func SanitizeCode(goCode string) string {
 // LoadTemplates loads all of our template files into a text/template. The
 // path of template is relative to the templates directory.
 func LoadTemplates(src embed.FS, t *template.Template) error {
-	entries, err := src.ReadDir("templates")
-	if err != nil {
-		return fmt.Errorf("reading template directory: %w", err)
-	}
-	for _, e := range entries {
-		path := filepath.Join("templates", e.Name())
+	return fs.WalkDir(src, "templates", func (path string, d fs.DirEntry, err error) error {
+		if err != nil {
+			return fmt.Errorf("error walking directory %s: %w", path, err)
+		}
+		if d.IsDir() {
+			return nil
+		}
+
 		buf, err := src.ReadFile(path)
 		if err != nil {
-			return fmt.Errorf("error reading file '%s': %s", path, err)
+			return fmt.Errorf("error reading file '%s': %w", path, err)
 		}
-		tmpl := t.New(e.Name())
+
+		templateName := strings.TrimPrefix(path, "templates/")
+		tmpl := t.New(templateName)
 		_, err = tmpl.Parse(string(buf))
 		if err != nil {
 			return fmt.Errorf("parsing template '%s': %w", path, err)
 		}
-	}
-	return nil
+		return nil
+	})
 }
+
