@@ -8,52 +8,65 @@ import (
 	"sync"
 )
 
+var (
+	lockServerInterfaceMockCreateResource           sync.RWMutex
+	lockServerInterfaceMockCreateResource2          sync.RWMutex
+	lockServerInterfaceMockGetEveryTypeOptional     sync.RWMutex
+	lockServerInterfaceMockGetReservedKeyword       sync.RWMutex
+	lockServerInterfaceMockGetResponseWithReference sync.RWMutex
+	lockServerInterfaceMockGetSimple                sync.RWMutex
+	lockServerInterfaceMockGetWithArgs              sync.RWMutex
+	lockServerInterfaceMockGetWithContentType       sync.RWMutex
+	lockServerInterfaceMockGetWithReferences        sync.RWMutex
+	lockServerInterfaceMockUpdateResource3          sync.RWMutex
+)
+
 // Ensure, that ServerInterfaceMock does implement ServerInterface.
 // If this is not the case, regenerate this file with moq.
 var _ ServerInterface = &ServerInterfaceMock{}
 
 // ServerInterfaceMock is a mock implementation of ServerInterface.
 //
-// 	func TestSomethingThatUsesServerInterface(t *testing.T) {
+//     func TestSomethingThatUsesServerInterface(t *testing.T) {
 //
-// 		// make and configure a mocked ServerInterface
-// 		mockedServerInterface := &ServerInterfaceMock{
-// 			CreateResourceFunc: func(w http.ResponseWriter, r *http.Request, argument Argument)  {
-// 				panic("mock out the CreateResource method")
-// 			},
-// 			CreateResource2Func: func(w http.ResponseWriter, r *http.Request, inlineArgument int, params CreateResource2Params)  {
-// 				panic("mock out the CreateResource2 method")
-// 			},
-// 			GetEveryTypeOptionalFunc: func(w http.ResponseWriter, r *http.Request)  {
-// 				panic("mock out the GetEveryTypeOptional method")
-// 			},
-// 			GetReservedKeywordFunc: func(w http.ResponseWriter, r *http.Request)  {
-// 				panic("mock out the GetReservedKeyword method")
-// 			},
-// 			GetResponseWithReferenceFunc: func(w http.ResponseWriter, r *http.Request)  {
-// 				panic("mock out the GetResponseWithReference method")
-// 			},
-// 			GetSimpleFunc: func(w http.ResponseWriter, r *http.Request)  {
-// 				panic("mock out the GetSimple method")
-// 			},
-// 			GetWithArgsFunc: func(w http.ResponseWriter, r *http.Request, params GetWithArgsParams)  {
-// 				panic("mock out the GetWithArgs method")
-// 			},
-// 			GetWithContentTypeFunc: func(w http.ResponseWriter, r *http.Request, contentType GetWithContentTypeParamsContentType)  {
-// 				panic("mock out the GetWithContentType method")
-// 			},
-// 			GetWithReferencesFunc: func(w http.ResponseWriter, r *http.Request, globalArgument int64, argument Argument)  {
-// 				panic("mock out the GetWithReferences method")
-// 			},
-// 			UpdateResource3Func: func(w http.ResponseWriter, r *http.Request, pFallthrough int)  {
-// 				panic("mock out the UpdateResource3 method")
-// 			},
-// 		}
+//         // make and configure a mocked ServerInterface
+//         mockedServerInterface := &ServerInterfaceMock{
+//             CreateResourceFunc: func(w http.ResponseWriter, r *http.Request, argument Argument)  {
+// 	               panic("mock out the CreateResource method")
+//             },
+//             CreateResource2Func: func(w http.ResponseWriter, r *http.Request, inlineArgument int, params CreateResource2Params)  {
+// 	               panic("mock out the CreateResource2 method")
+//             },
+//             GetEveryTypeOptionalFunc: func(w http.ResponseWriter, r *http.Request)  {
+// 	               panic("mock out the GetEveryTypeOptional method")
+//             },
+//             GetReservedKeywordFunc: func(w http.ResponseWriter, r *http.Request)  {
+// 	               panic("mock out the GetReservedKeyword method")
+//             },
+//             GetResponseWithReferenceFunc: func(w http.ResponseWriter, r *http.Request)  {
+// 	               panic("mock out the GetResponseWithReference method")
+//             },
+//             GetSimpleFunc: func(w http.ResponseWriter, r *http.Request)  {
+// 	               panic("mock out the GetSimple method")
+//             },
+//             GetWithArgsFunc: func(w http.ResponseWriter, r *http.Request, params GetWithArgsParams)  {
+// 	               panic("mock out the GetWithArgs method")
+//             },
+//             GetWithContentTypeFunc: func(w http.ResponseWriter, r *http.Request, contentType GetWithContentTypeParamsContentType)  {
+// 	               panic("mock out the GetWithContentType method")
+//             },
+//             GetWithReferencesFunc: func(w http.ResponseWriter, r *http.Request, globalArgument int64, argument Argument)  {
+// 	               panic("mock out the GetWithReferences method")
+//             },
+//             UpdateResource3Func: func(w http.ResponseWriter, r *http.Request, pFallthrough int)  {
+// 	               panic("mock out the UpdateResource3 method")
+//             },
+//         }
 //
-// 		// use mockedServerInterface in code that requires ServerInterface
-// 		// and then make assertions.
+//         // use mockedServerInterface in code that requires ServerInterface
+//         // and then make assertions.
 //
-// 	}
+//     }
 type ServerInterfaceMock struct {
 	// CreateResourceFunc mocks the CreateResource method.
 	CreateResourceFunc func(w http.ResponseWriter, r *http.Request, argument Argument)
@@ -174,16 +187,6 @@ type ServerInterfaceMock struct {
 			PFallthrough int
 		}
 	}
-	lockCreateResource           sync.RWMutex
-	lockCreateResource2          sync.RWMutex
-	lockGetEveryTypeOptional     sync.RWMutex
-	lockGetReservedKeyword       sync.RWMutex
-	lockGetResponseWithReference sync.RWMutex
-	lockGetSimple                sync.RWMutex
-	lockGetWithArgs              sync.RWMutex
-	lockGetWithContentType       sync.RWMutex
-	lockGetWithReferences        sync.RWMutex
-	lockUpdateResource3          sync.RWMutex
 }
 
 // CreateResource calls CreateResourceFunc.
@@ -200,9 +203,9 @@ func (mock *ServerInterfaceMock) CreateResource(w http.ResponseWriter, r *http.R
 		R:        r,
 		Argument: argument,
 	}
-	mock.lockCreateResource.Lock()
+	lockServerInterfaceMockCreateResource.Lock()
 	mock.calls.CreateResource = append(mock.calls.CreateResource, callInfo)
-	mock.lockCreateResource.Unlock()
+	lockServerInterfaceMockCreateResource.Unlock()
 	mock.CreateResourceFunc(w, r, argument)
 }
 
@@ -219,9 +222,9 @@ func (mock *ServerInterfaceMock) CreateResourceCalls() []struct {
 		R        *http.Request
 		Argument Argument
 	}
-	mock.lockCreateResource.RLock()
+	lockServerInterfaceMockCreateResource.RLock()
 	calls = mock.calls.CreateResource
-	mock.lockCreateResource.RUnlock()
+	lockServerInterfaceMockCreateResource.RUnlock()
 	return calls
 }
 
@@ -241,9 +244,9 @@ func (mock *ServerInterfaceMock) CreateResource2(w http.ResponseWriter, r *http.
 		InlineArgument: inlineArgument,
 		Params:         params,
 	}
-	mock.lockCreateResource2.Lock()
+	lockServerInterfaceMockCreateResource2.Lock()
 	mock.calls.CreateResource2 = append(mock.calls.CreateResource2, callInfo)
-	mock.lockCreateResource2.Unlock()
+	lockServerInterfaceMockCreateResource2.Unlock()
 	mock.CreateResource2Func(w, r, inlineArgument, params)
 }
 
@@ -262,9 +265,9 @@ func (mock *ServerInterfaceMock) CreateResource2Calls() []struct {
 		InlineArgument int
 		Params         CreateResource2Params
 	}
-	mock.lockCreateResource2.RLock()
+	lockServerInterfaceMockCreateResource2.RLock()
 	calls = mock.calls.CreateResource2
-	mock.lockCreateResource2.RUnlock()
+	lockServerInterfaceMockCreateResource2.RUnlock()
 	return calls
 }
 
@@ -280,9 +283,9 @@ func (mock *ServerInterfaceMock) GetEveryTypeOptional(w http.ResponseWriter, r *
 		W: w,
 		R: r,
 	}
-	mock.lockGetEveryTypeOptional.Lock()
+	lockServerInterfaceMockGetEveryTypeOptional.Lock()
 	mock.calls.GetEveryTypeOptional = append(mock.calls.GetEveryTypeOptional, callInfo)
-	mock.lockGetEveryTypeOptional.Unlock()
+	lockServerInterfaceMockGetEveryTypeOptional.Unlock()
 	mock.GetEveryTypeOptionalFunc(w, r)
 }
 
@@ -297,9 +300,9 @@ func (mock *ServerInterfaceMock) GetEveryTypeOptionalCalls() []struct {
 		W http.ResponseWriter
 		R *http.Request
 	}
-	mock.lockGetEveryTypeOptional.RLock()
+	lockServerInterfaceMockGetEveryTypeOptional.RLock()
 	calls = mock.calls.GetEveryTypeOptional
-	mock.lockGetEveryTypeOptional.RUnlock()
+	lockServerInterfaceMockGetEveryTypeOptional.RUnlock()
 	return calls
 }
 
@@ -315,9 +318,9 @@ func (mock *ServerInterfaceMock) GetReservedKeyword(w http.ResponseWriter, r *ht
 		W: w,
 		R: r,
 	}
-	mock.lockGetReservedKeyword.Lock()
+	lockServerInterfaceMockGetReservedKeyword.Lock()
 	mock.calls.GetReservedKeyword = append(mock.calls.GetReservedKeyword, callInfo)
-	mock.lockGetReservedKeyword.Unlock()
+	lockServerInterfaceMockGetReservedKeyword.Unlock()
 	mock.GetReservedKeywordFunc(w, r)
 }
 
@@ -332,9 +335,9 @@ func (mock *ServerInterfaceMock) GetReservedKeywordCalls() []struct {
 		W http.ResponseWriter
 		R *http.Request
 	}
-	mock.lockGetReservedKeyword.RLock()
+	lockServerInterfaceMockGetReservedKeyword.RLock()
 	calls = mock.calls.GetReservedKeyword
-	mock.lockGetReservedKeyword.RUnlock()
+	lockServerInterfaceMockGetReservedKeyword.RUnlock()
 	return calls
 }
 
@@ -350,9 +353,9 @@ func (mock *ServerInterfaceMock) GetResponseWithReference(w http.ResponseWriter,
 		W: w,
 		R: r,
 	}
-	mock.lockGetResponseWithReference.Lock()
+	lockServerInterfaceMockGetResponseWithReference.Lock()
 	mock.calls.GetResponseWithReference = append(mock.calls.GetResponseWithReference, callInfo)
-	mock.lockGetResponseWithReference.Unlock()
+	lockServerInterfaceMockGetResponseWithReference.Unlock()
 	mock.GetResponseWithReferenceFunc(w, r)
 }
 
@@ -367,9 +370,9 @@ func (mock *ServerInterfaceMock) GetResponseWithReferenceCalls() []struct {
 		W http.ResponseWriter
 		R *http.Request
 	}
-	mock.lockGetResponseWithReference.RLock()
+	lockServerInterfaceMockGetResponseWithReference.RLock()
 	calls = mock.calls.GetResponseWithReference
-	mock.lockGetResponseWithReference.RUnlock()
+	lockServerInterfaceMockGetResponseWithReference.RUnlock()
 	return calls
 }
 
@@ -385,9 +388,9 @@ func (mock *ServerInterfaceMock) GetSimple(w http.ResponseWriter, r *http.Reques
 		W: w,
 		R: r,
 	}
-	mock.lockGetSimple.Lock()
+	lockServerInterfaceMockGetSimple.Lock()
 	mock.calls.GetSimple = append(mock.calls.GetSimple, callInfo)
-	mock.lockGetSimple.Unlock()
+	lockServerInterfaceMockGetSimple.Unlock()
 	mock.GetSimpleFunc(w, r)
 }
 
@@ -402,9 +405,9 @@ func (mock *ServerInterfaceMock) GetSimpleCalls() []struct {
 		W http.ResponseWriter
 		R *http.Request
 	}
-	mock.lockGetSimple.RLock()
+	lockServerInterfaceMockGetSimple.RLock()
 	calls = mock.calls.GetSimple
-	mock.lockGetSimple.RUnlock()
+	lockServerInterfaceMockGetSimple.RUnlock()
 	return calls
 }
 
@@ -422,9 +425,9 @@ func (mock *ServerInterfaceMock) GetWithArgs(w http.ResponseWriter, r *http.Requ
 		R:      r,
 		Params: params,
 	}
-	mock.lockGetWithArgs.Lock()
+	lockServerInterfaceMockGetWithArgs.Lock()
 	mock.calls.GetWithArgs = append(mock.calls.GetWithArgs, callInfo)
-	mock.lockGetWithArgs.Unlock()
+	lockServerInterfaceMockGetWithArgs.Unlock()
 	mock.GetWithArgsFunc(w, r, params)
 }
 
@@ -441,9 +444,9 @@ func (mock *ServerInterfaceMock) GetWithArgsCalls() []struct {
 		R      *http.Request
 		Params GetWithArgsParams
 	}
-	mock.lockGetWithArgs.RLock()
+	lockServerInterfaceMockGetWithArgs.RLock()
 	calls = mock.calls.GetWithArgs
-	mock.lockGetWithArgs.RUnlock()
+	lockServerInterfaceMockGetWithArgs.RUnlock()
 	return calls
 }
 
@@ -461,9 +464,9 @@ func (mock *ServerInterfaceMock) GetWithContentType(w http.ResponseWriter, r *ht
 		R:           r,
 		ContentType: contentType,
 	}
-	mock.lockGetWithContentType.Lock()
+	lockServerInterfaceMockGetWithContentType.Lock()
 	mock.calls.GetWithContentType = append(mock.calls.GetWithContentType, callInfo)
-	mock.lockGetWithContentType.Unlock()
+	lockServerInterfaceMockGetWithContentType.Unlock()
 	mock.GetWithContentTypeFunc(w, r, contentType)
 }
 
@@ -480,9 +483,9 @@ func (mock *ServerInterfaceMock) GetWithContentTypeCalls() []struct {
 		R           *http.Request
 		ContentType GetWithContentTypeParamsContentType
 	}
-	mock.lockGetWithContentType.RLock()
+	lockServerInterfaceMockGetWithContentType.RLock()
 	calls = mock.calls.GetWithContentType
-	mock.lockGetWithContentType.RUnlock()
+	lockServerInterfaceMockGetWithContentType.RUnlock()
 	return calls
 }
 
@@ -502,9 +505,9 @@ func (mock *ServerInterfaceMock) GetWithReferences(w http.ResponseWriter, r *htt
 		GlobalArgument: globalArgument,
 		Argument:       argument,
 	}
-	mock.lockGetWithReferences.Lock()
+	lockServerInterfaceMockGetWithReferences.Lock()
 	mock.calls.GetWithReferences = append(mock.calls.GetWithReferences, callInfo)
-	mock.lockGetWithReferences.Unlock()
+	lockServerInterfaceMockGetWithReferences.Unlock()
 	mock.GetWithReferencesFunc(w, r, globalArgument, argument)
 }
 
@@ -523,9 +526,9 @@ func (mock *ServerInterfaceMock) GetWithReferencesCalls() []struct {
 		GlobalArgument int64
 		Argument       Argument
 	}
-	mock.lockGetWithReferences.RLock()
+	lockServerInterfaceMockGetWithReferences.RLock()
 	calls = mock.calls.GetWithReferences
-	mock.lockGetWithReferences.RUnlock()
+	lockServerInterfaceMockGetWithReferences.RUnlock()
 	return calls
 }
 
@@ -543,9 +546,9 @@ func (mock *ServerInterfaceMock) UpdateResource3(w http.ResponseWriter, r *http.
 		R:            r,
 		PFallthrough: pFallthrough,
 	}
-	mock.lockUpdateResource3.Lock()
+	lockServerInterfaceMockUpdateResource3.Lock()
 	mock.calls.UpdateResource3 = append(mock.calls.UpdateResource3, callInfo)
-	mock.lockUpdateResource3.Unlock()
+	lockServerInterfaceMockUpdateResource3.Unlock()
 	mock.UpdateResource3Func(w, r, pFallthrough)
 }
 
@@ -562,8 +565,8 @@ func (mock *ServerInterfaceMock) UpdateResource3Calls() []struct {
 		R            *http.Request
 		PFallthrough int
 	}
-	mock.lockUpdateResource3.RLock()
+	lockServerInterfaceMockUpdateResource3.RLock()
 	calls = mock.calls.UpdateResource3
-	mock.lockUpdateResource3.RUnlock()
+	lockServerInterfaceMockUpdateResource3.RUnlock()
 	return calls
 }

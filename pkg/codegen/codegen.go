@@ -626,11 +626,10 @@ func SanitizeCode(goCode string) string {
 	return strings.Replace(goCode, "\uFEFF", "", -1)
 }
 
-
 // LoadTemplates loads all of our template files into a text/template. The
 // path of template is relative to the templates directory.
 func LoadTemplates(src embed.FS, t *template.Template) error {
-	return fs.WalkDir(src, "templates", func (path string, d fs.DirEntry, err error) error {
+	return fs.WalkDir(src, "templates", func(path string, d fs.DirEntry, err error) error {
 		if err != nil {
 			return fmt.Errorf("error walking directory %s: %w", path, err)
 		}
@@ -652,4 +651,3 @@ func LoadTemplates(src embed.FS, t *template.Template) error {
 		return nil
 	})
 }
-
