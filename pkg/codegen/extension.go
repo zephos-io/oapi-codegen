@@ -7,7 +7,7 @@ import (
 
 const (
 	extPropGoType    = "x-go-type"
-	extGoFieldName   = "x-go-name"
+	extGoFieldName   = "x-alt-field-name"
 	extPropOmitEmpty = "x-omitempty"
 	extPropExtraTags = "x-oapi-codegen-extra-tags"
 )
